@@ -1,13 +1,13 @@
 <h2>Usuarios</h2>
 
-<button (click)="cargarUsuarios()">Cargar Usuarios</button>
+<button (click)="cargarUsuarios()">Cargar usuarios</button>
 
-<p *ngIf="errorMensaje" style="color: red;">
-  {{ errorMensaje }}
-</p>
+<p *ngIf="errorMensaje" class="mensaje-error">{{ errorMensaje }}</p>
 
 <ul *ngIf="usuarios.length > 0">
   <li *ngFor="let usuario of usuarios">
     {{ usuario.name }} — {{ usuario.email }}
   </li>
 </ul>
+
+<p *ngIf="usuarios.length === 0 && !errorMensaje">No hay usuarios para mostrar</p>
