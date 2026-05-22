@@ -1,15 +1,4 @@
-// ============================================================
-// usuarios.ts
-// Componente encargado de mostrar la lista de usuarios
-// obtenida desde una API REST externa.
-//
-// Gestiona el ciclo de vida del componente (RA03_d):
-//   - ngOnInit:    carga automática al entrar en la sección.
-//   - ngOnDestroy: cancela la suscripción al salir
-//                  para evitar fugas de memoria.
-// ============================================================
-
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UsuariosServicio } from '../usuarios-servicio';
 
@@ -21,53 +10,40 @@ import { UsuariosServicio } from '../usuarios-servicio';
 })
 export class Usuarios implements OnInit, OnDestroy {
 
-  // Array donde se almacenan los usuarios recibidos desde la API.
+  // Lista de usuarios devuelta por la API
   usuarios: any[] = [];
 
-  // Mensaje de error que se mostrará al usuario en caso de fallo.
+  // Mensaje de error que se muestra en la vista si la petición falla
   errorMensaje: string = '';
 
-  // Referencia a la suscripción activa al observable del servicio.
-  // Se guarda para poder cancelarla en ngOnDestroy y evitar
-  // que el observable quede vivo cuando el componente se destruye.
+  // Identificador de la suscripción para poder cancelarla en ngOnDestroy
   private suscripcion?: Subscription;
 
-  constructor(
-    private usuariosServicio: UsuariosServicio,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private usuariosServicio: UsuariosServicio) { }
 
-  // ngOnInit: se ejecuta automáticamente al inicializar el componente.
-  // Carga la lista de usuarios sin necesidad de pulsar el botón.
+  // Al iniciar el componente cargamos la lista de usuarios
   ngOnInit(): void {
     this.cargarUsuarios();
   }
 
-  // ngOnDestroy: se ejecuta cuando el componente se destruye
-  // (al navegar a otra sección del menú).
-  // Cancela la suscripción activa para evitar fugas de memoria.
+  // Al destruir el componente cancelamos la suscripción para evitar fugas de memoria
   ngOnDestroy(): void {
-    this.suscripcion?.unsubscribe();
+    if (this.suscripcion) {
+      this.suscripcion.unsubscribe();
+    }
   }
 
-  // cargarUsuarios: realiza la petición al servicio y se suscribe
-  // al observable devuelto. Se llama tanto desde ngOnInit
-  // como desde el botón "Cargar Usuarios" de la interfaz.
+  // Petición al servicio. Se suscribe al observable y guarda la suscripción.
   cargarUsuarios(): void {
-    // Cancela cualquier suscripción anterior antes de crear una nueva
-    // para evitar acumulación de observables vivos.
-    this.suscripcion?.unsubscribe();
+    this.errorMensaje = '';
 
     this.suscripcion = this.usuariosServicio.getUsuarios().subscribe({
       next: (data) => {
         this.usuarios = data;
-        this.errorMensaje = '';
-        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMensaje = err.message;
         this.usuarios = [];
-        this.cdr.detectChanges();
       }
     });
   }
