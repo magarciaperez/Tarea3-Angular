@@ -1,0 +1,73 @@
+<div class="admin-container">
+  <h1>Administración de productos</h1>
+
+  <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre" />
+
+      <div class="error" *ngIf="nombre?.touched && nombre?.invalid">
+        <p *ngIf="nombre?.errors?.['required']">El nombre es obligatorio.</p>
+        <p *ngIf="nombre?.errors?.['minlength']">Mínimo 3 caracteres.</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio</label>
+      <input id="precio" type="number" formControlName="precio" />
+
+      <div class="error" *ngIf="precio?.touched && precio?.invalid">
+        <p *ngIf="precio?.errors?.['required']">El precio es obligatorio.</p>
+        <p *ngIf="precio?.errors?.['min']">El precio debe ser mayor que 0.</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="stock">Stock</label>
+      <input id="stock" type="number" formControlName="stock" />
+
+      <div class="error" *ngIf="stock?.touched && stock?.invalid">
+        <p *ngIf="stock?.errors?.['required']">El stock es obligatorio.</p>
+        <p *ngIf="stock?.errors?.['min']">El stock no puede ser negativo.</p>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="productoForm.invalid">
+      Añadir producto
+    </button>
+  </form>
+
+  <hr />
+
+  <h2>Listado de productos</h2>
+
+  <table *ngIf="productos.length > 0; else sinProductos" class="tabla-productos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td>{{ producto.id }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.precio }} €</td>
+        <td>{{ producto.stock }}</td>
+        <td>
+          <button type="button" (click)="eliminarProducto(producto.id)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #sinProductos>
+    <p>No hay productos en el catálogo.</p>
+  </ng-template>
+</div>

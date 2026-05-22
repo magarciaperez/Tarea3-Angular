@@ -1,0 +1,17 @@
+.wrapper {
+  padding-top: 25px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+
+  .panel {
+    flex: 1 1 0;
+    border: 1px solid #cfcfcf;
+    border-radius: 8px;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    height: 80vh;       /* alto fijo */
+    overflow: auto;     /* scroll cuando se desborda */
+  }
+}

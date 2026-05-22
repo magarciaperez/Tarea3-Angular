@@ -1,0 +1,39 @@
+<div class="wrapper">
+  <h1 class="title">Listado de productos</h1>
+
+  <ng-container *ngIf="productos.length > 0; else emptyList">
+
+    <div *ngFor="let item of productos; let i = index"
+         class="productos-container">
+
+      <div class="tarjeta"
+           [ngClass]="{ 'sin-stock': item.stock === 0 }">
+
+        <div class="info">
+          <h2 class="nombre">{{ item.nombre }}</h2>
+          <p class="precio">Precio: {{ item.precio }} €</p>
+
+          <span class="stock"
+                [ngStyle]="{
+                  'color': item.stock === 0 ? 'red' : 'green',
+                  'font-weight': item.stock === 0 ? 'bold' : 'normal'
+                }">
+            Stock: {{ item.stock }}
+          </span>
+        </div>
+
+        <button
+          (click)="onAddToCart(item)"
+          [disabled]="item.stock === 0">
+          Añadir al carrito
+        </button>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <ng-template #emptyList>
+    <h4>Sin productos disponibles</h4>
+  </ng-template>
+</div>

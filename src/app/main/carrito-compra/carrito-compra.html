@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <h1 class="title">Carrito de compra</h1>
+
+  <ng-container *ngIf="carrito.length > 0; else emptyCart">
+
+    <div *ngFor="let item of carrito" class="productos-container">
+      <div class="tarjeta">
+        <div class="info">
+          <h2 class="nombre">{{ item.nombre }}</h2>
+          <p class="precio">Precio: {{ item.precio }} €</p>
+          <p class="unidades">Unidades: {{ item.unidades }}</p>
+          <p class="subtotal">Subtotal: {{ item.precio * item.unidades | number:'1.2-2' }} €</p>
+        </div>
+
+        <button (click)="onRemoveFromCart(item)">
+          Eliminar
+        </button>
+      </div>
+    </div>
+
+    <div class="total">
+      <h3>Total: {{ getTotal() | number:'1.2-2' }} €</h3>
+    </div>
+
+  </ng-container>
+
+  <ng-template #emptyCart>
+    <h4>Tu carrito está vacío</h4>
+  </ng-template>
+</div>

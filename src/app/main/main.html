@@ -1,0 +1,17 @@
+<div class="wrapper">
+
+  <div class="panel">
+    <app-listado-productos
+      [productos]="productos"
+      (addToCart)="addToCart($event)">
+    </app-listado-productos>
+  </div>
+
+  <div class="panel">
+    <app-carrito-compra
+      [carrito]="carrito"
+      (removeFromCart)="removeFromCart($event)">
+    </app-carrito-compra>
+  </div>
+
+</div>
