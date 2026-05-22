@@ -1,7 +1,7 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing-module';
 
@@ -29,8 +29,10 @@ import { Usuarios } from './usuarios/usuarios';
     ReactiveFormsModule
   ],
   providers: [
-    provideHttpClient(withFetch())
-],
+    provideBrowserGlobalErrorListeners(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(withInterceptorsFromDi())
+  ],
   bootstrap: [App]
 })
 export class AppModule { }
